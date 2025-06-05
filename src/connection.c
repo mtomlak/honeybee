@@ -21,8 +21,8 @@
  */
 
 // External config variables
-int var_debug;
-char *var_type;
+extern int var_debug;
+extern char *var_type;
 
 
 void cisco_telnet_fire1_banner(int sock)

@@ -18,7 +18,7 @@
 
 int var_port = 0;
 int var_debug = 0;
-char *var_type = '\0';
+char *var_type = NULL;
 const char *modes[MODE_COUNT];
 
 /**
@@ -134,7 +134,7 @@ void print_help(char *self)
    printf("Usage : %s [ -a | -m <mode> ] [ -dhpv ]\n", self);
    printf("\t-a starts daemons for all modes\n");
    printf("\t-d goes daemon\n\t-h prints this help\n");
-   printf("\t-m sets honeypot mode, available modes - with name and port:\n", var_type);
+   printf("\t-m sets honeypot mode, available modes - with name and port:\n");
    printf("\t\tcisco-fingerd\t\tCisco fingerd\t\t\t\t2003\n");
    printf("\t\tcisco-telnet-fire\tCisco PIX 500 series telnetd\t\t5999\n");
    printf("\t\tcisco-telnet-fire2\tCisco telnetd (IOS 6.X)\t\t\t5998\n");
@@ -142,7 +142,7 @@ void print_help(char *self)
    printf("\t\tcisco-lm\t\tCisco CallManager license manager 6\t5910\n");
    printf("\t\toracle-app-manager\tOracle Application Server 11g httpd\t5988\n");
    printf("\t\toracle-rmi-lite\t\tOracle Database Lite RMI\t\t5987\n");
-   printf("\t-p force specific port number (defaults according to module)\n", var_port);
+   printf("\t-p force specific port number (defaults according to module)\n");
    printf("\t-v enters verbose (debug) mode (currently %s)\n\n", 
       var_debug ? "ON" : "OFF");
 }

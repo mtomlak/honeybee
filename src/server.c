@@ -19,7 +19,7 @@
  * 
  * @return [description]
  */
-int server_start(int port_num) 
+int server_start(int port_num)
 {
    int sockfd, newsockfd, clilen;
    char buffer[BUF_SZ];
