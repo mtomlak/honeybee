@@ -18,7 +18,7 @@
 
 int var_port = 0;
 int var_debug = 0;
-char *var_type = '\0';
+char *var_type = NULL;
 const char *modes[MODE_COUNT];
 
 /**
