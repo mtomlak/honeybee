@@ -21,8 +21,8 @@
  */
 
 // External config variables
-int var_debug;
-char *var_type;
+extern int var_debug;
+extern char *var_type;
 
 
 void cisco_telnet_fire1_banner(int sock)
@@ -57,7 +57,69 @@ void oracle_app_manager_banner(int sock)
 
 void oracle_rmi_lite_banner(int sock)
 {
-   write(sock, "\0\0\xfa\xda\0\x02", 6);  
+   write(sock, "\0\0\xfa\xda\0\x02", 6);
+}
+
+void cisco_sccp_banner(int sock)
+{
+   stream_write(sock, "SCCP Cisco CallManager 12.0\r\n");
+}
+
+void cisco_smi_banner(int sock)
+{
+   unsigned char msg[] = {0x00,0x00,0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x00,0x00,0x04,0x00,0x00,0x00,0x01};
+   write(sock, msg, sizeof(msg));
+}
+
+void cisco_sip_banner(int sock)
+{
+   stream_write(sock, "SIP/2.0 200 OK\r\nServer: Cisco-SIPGateway\r\n\r\n");
+}
+
+void cisco_tftp_banner(int sock)
+{
+   unsigned char msg[] = {0x00,0x05,0x00,0x00,'I','n','v','a','l','i','d',' ','T','F','T','P',' ','O','p','c','o','d','e'};
+   write(sock, msg, sizeof(msg));
+}
+
+void cisco_snmp_banner(int sock)
+{
+   stream_write(sock, "SNMPv2-MIB::sysDescr.0 = STRING: Cisco IOS Software\r\n");
+}
+
+void cisco_ike_banner(int sock)
+{
+   stream_write(sock, "Cisco VPN 3000 concentrator\r\n");
+}
+
+void ms_ldap_gc_banner(int sock)
+{
+   stream_write(sock, "Active Directory LDAP\r\n");
+}
+
+void ms_rpc_dynamic_banner(int sock)
+{
+   stream_write(sock, "Microsoft Windows RPC\r\n");
+}
+
+void apple_ard_banner(int sock)
+{
+   stream_write(sock, "ARDAgent\r\n");
+}
+
+void apple_daap_banner(int sock)
+{
+   stream_write(sock, "HTTP/1.1 200 OK\r\nServer: DAAP\r\n\r\n");
+}
+
+void ibm_mqtt_tls_banner(int sock)
+{
+   stream_write(sock, "IBM MessageSight MQTT\r\n");
+}
+
+void vmware_vami_banner(int sock)
+{
+   stream_write(sock, "HTTP/1.1 200 OK\r\nServer: VMware VAMI\r\n\r\n");
 }
 
 int telnet_password_prompt(char *line, struct conn_state *state, int max_tries)
@@ -136,6 +198,54 @@ void handle_connection (int sock)
    } else if (strcmp(var_type, "cisco-lm") == 0) {
       cisco_lm6_banner(sock);
       sleep(2);
+
+   } else if (strcmp(var_type, "cisco-sccp") == 0) {
+      cisco_sccp_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "cisco-smi") == 0) {
+      cisco_smi_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "cisco-sip") == 0) {
+      cisco_sip_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "cisco-tftp") == 0) {
+      cisco_tftp_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "cisco-snmp") == 0) {
+      cisco_snmp_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "cisco-ike") == 0) {
+      cisco_ike_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "ms-ldap-gc") == 0) {
+      ms_ldap_gc_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "ms-rpc-dynamic") == 0) {
+      ms_rpc_dynamic_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "apple-ard") == 0) {
+      apple_ard_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "apple-daap") == 0) {
+      apple_daap_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "ibm-mqtt-tls") == 0) {
+      ibm_mqtt_tls_banner(sock);
+      sleep(1);
+
+   } else if (strcmp(var_type, "vmware-vami") == 0) {
+      vmware_vami_banner(sock);
+      sleep(1);
 
    } else {
       die_err("Unsupported mode: %s", var_type);
