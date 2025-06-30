@@ -52,7 +52,7 @@ void cisco_lm6_banner(int sock) //5038
 
 void oracle_app_manager_banner(int sock)
 {
-   stream_write(sock, "HTTP/1.1 200 OK\r\n.*Server: Oracle-Application-Server-11g\r\nAllow: GET,HEAD,POST,OPTIONS\r\nContent-Length: 0\r\n");  
+   stream_write(sock, "HTTP/1.1 200 OK\r\nServer: Oracle-Application-Server-11g\r\nAllow: GET,HEAD,POST,OPTIONS\r\nContent-Length: 0\r\n\r\n");
 }
 
 void oracle_rmi_lite_banner(int sock)
@@ -73,7 +73,7 @@ void cisco_smi_banner(int sock)
 
 void cisco_sip_banner(int sock)
 {
-   stream_write(sock, "SIP/2.0 200 OK\r\nServer: Cisco-SIPGateway\r\n\r\n");
+   stream_write(sock, "SIP/2.0 200 OK\r\nServer: Cisco-SIPGateway/IOS-12.4\r\n\r\n");
 }
 
 void cisco_tftp_banner(int sock)
@@ -94,32 +94,38 @@ void cisco_ike_banner(int sock)
 
 void ms_ldap_gc_banner(int sock)
 {
-   stream_write(sock, "Active Directory LDAP\r\n");
+   unsigned char msg[] = {0x30,0x25,0x02,0x01,0x01,0x61,0x20,0x0a,0x01,0x30,0x04,0x00,0x04,0x19,
+      'a','n','o','n','y','m','o','u','s',' ','b','i','n','d',' ','d','i','s','a','l','l','o','w','e','d'};
+   write(sock, msg, sizeof(msg));
 }
 
 void ms_rpc_dynamic_banner(int sock)
 {
-   stream_write(sock, "Microsoft Windows RPC\r\n");
+   unsigned char msg[] = {0x05,0x00,0x0d,0x03,0x10,0x00,0x00,0x00,
+      0x18,0x00,0x00,0x00,0x76,0x07,0x00,0x00,
+      0x04,0x00,0x01,0x05,0x00,0x00,0x00,0x00};
+   write(sock, msg, sizeof(msg));
 }
 
 void apple_ard_banner(int sock)
 {
-   stream_write(sock, "ARDAgent\r\n");
+   stream_write(sock, "RFB 003.889\n");
 }
 
 void apple_daap_banner(int sock)
 {
-   stream_write(sock, "HTTP/1.1 200 OK\r\nServer: DAAP\r\n\r\n");
+   stream_write(sock, "HTTP/1.1 400 Bad Request\r\nDAAP-Server: iTunes/12.5 (Macintosh; Intel Mac OS X)\r\n\r\n");
 }
 
 void ibm_mqtt_tls_banner(int sock)
 {
-   stream_write(sock, "IBM MessageSight MQTT\r\n");
+   unsigned char msg[] = {0x20,0x02,0x00,0x00};
+   write(sock, msg, sizeof(msg));
 }
 
 void vmware_vami_banner(int sock)
 {
-   stream_write(sock, "HTTP/1.1 200 OK\r\nServer: VMware VAMI\r\n\r\n");
+   stream_write(sock, "HTTP/1.1 400 Bad Request\r\nServer: sfcHttpd\r\nContent-Length: 0\r\n\r\n");
 }
 
 int telnet_password_prompt(char *line, struct conn_state *state, int max_tries)
